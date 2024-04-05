@@ -2,6 +2,7 @@ const request = require("request");
 const cheerio = require("cheerio");
 const fs = require("fs");
 const path = require("path");
+const pdfKit = require("pdfkit");
 
 function getIssuesPageHtml(url, topic, repoName) {
   request(url, cb);
@@ -22,18 +23,30 @@ function getIssues(html, topic, repoName) {
   const arr = [];
   for (let i = 0; i < issuesArr.length; i++) {
     const link = $(issuesArr[i]).attr("href");
-    arr.push(link);
+    arr.push(`https://github.com${link}`);
   }
-  console.log(topic);
-  console.log(repoName, ".....", arr);
-  //create a folder for the topic which wil contain the repo files
+
+  // Create a folder for the topic which will contain the repo files
   const folderpath = path.join(__dirname, topic);
   dirCreator(folderpath);
-  const filePath = path.join(folderpath, repoName + ".json");
-  fs.writeFileSync(filePath, JSON.stringify(arr));
+  const filePath = path.join(folderpath, repoName + ".pdf");
+
+  const pdfDoc = new pdfKit();
+  pdfDoc.pipe(fs.createWriteStream(filePath));
+
+  arr.forEach((link) => {
+    pdfDoc.fontSize(12).fillColor("blue").text(link, {
+      link: link,
+      underline: true,
+    });
+    pdfDoc.moveDown(); // Adds space between the links
+  });
+
+  pdfDoc.end();
 }
 
 module.exports = getIssuesPageHtml;
+
 function dirCreator(folderpath) {
   if (fs.existsSync(folderpath) === false) {
     fs.mkdirSync(folderpath);

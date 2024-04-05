@@ -17,7 +17,7 @@ function getReposPageHtml(url, topic) {
 function getReposLink(html, topic) {
   const $ = cheerio.load(html);
   const headingsArr = $(".f3.color-fg-muted.text-normal.lh-condensed");
-  console.log(topic);
+
   for (let i = 0; i < 10; i++) {
     const twoAnchors = $(headingsArr[i]).find("a");
     const link = $(twoAnchors[1]).attr("href");
@@ -25,7 +25,6 @@ function getReposLink(html, topic) {
     const repoName = link.split("/").pop();
     getIssuesPageHtml(fullLink, topic, repoName);
   }
-  console.log(".......");
 }
 
 module.exports = getReposPageHtml;
