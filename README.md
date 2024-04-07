@@ -38,6 +38,6 @@ This project scrapes GitHub topics and picks up the top 10 repositories from eac
 
 ## Dependencies
 
-request - Simplified HTTP request client.
-cheerio - Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
-pdfkit - A JavaScript PDF generation library for Node and the browser.
+- request - Simplified HTTP request client.
+- cheerio - Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
+- pdfkit - A JavaScript PDF generation library for Node and the browser.
